@@ -2,7 +2,7 @@
     "name": "Appointment Reminders",
     "short_name": "Appointments",
     "description": "Keep track of all your different health-related appointments in one place",
-    "start_url": "/",
+    "start_url": "./",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#4CAF50",

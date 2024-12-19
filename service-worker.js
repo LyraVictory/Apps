@@ -7,8 +7,8 @@ self.addEventListener('install', (event) => {
                 '/index.html',     // Cache the main HTML page
                 '/style.css',      // Cache the CSS file
                 '/script.js',      // Cache the JS file
-                '/icons/icon-192x192.png', // Cache the icons
-                '/icons/icon-512x512.png'
+                '/icons/web-app-manifest-192x192.png', // Cache the icons
+                '/icons/web-app-manifest-512x512.png'
             ]);
         })
     );
