@@ -92,3 +92,41 @@ function showReminders() {
     }
 }
 
+// Function to save appointments
+function saveAppointments(appointments) {
+    localStorage.setItem('appointments', JSON.stringify(appointments));
+  }
+  
+  // Function to load appointments
+  function loadAppointments() {
+    const appointments = localStorage.getItem('appointments');
+    return appointments ? JSON.parse(appointments) : [];
+  }
+  
+  // Example usage
+  let appointments = loadAppointments();  // Load existing appointments when app starts
+  
+  // Add an appointment
+  function addAppointment(date, description) {
+    const newAppointment = {
+      date: date,
+      description: description
+    };
+    appointments.push(newAppointment);
+    saveAppointments(appointments);  // Save updated appointments
+  }
+  
+  // Display the appointments
+  function displayAppointments() {
+    const appointmentsList = document.getElementById('appointments-list');
+    appointmentsList.innerHTML = '';  // Clear current list
+    appointments.forEach(appointment => {
+      const li = document.createElement('li');
+      li.textContent = `${appointment.date} - ${appointment.description}`;
+      appointmentsList.appendChild(li);
+    });
+  }
+  
+  // Call this function to display the appointments
+  displayAppointments();
+  
