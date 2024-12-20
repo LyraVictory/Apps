@@ -92,41 +92,60 @@ function showReminders() {
     }
 }
 
-// Function to save appointments
-function saveAppointments(appointments) {
+let appointments = [];
+
+function saveAppointments() {
     localStorage.setItem('appointments', JSON.stringify(appointments));
-  }
-  
-  // Function to load appointments
-  function loadAppointments() {
-    const appointments = localStorage.getItem('appointments');
-    return appointments ? JSON.parse(appointments) : [];
-  }
-  
-  // Example usage
-  let appointments = loadAppointments();  // Load existing appointments when app starts
-  
-  // Add an appointment
-  function addAppointment(date, description) {
-    const newAppointment = {
-      date: date,
-      description: description
-    };
-    appointments.push(newAppointment);
-    saveAppointments(appointments);  // Save updated appointments
-  }
-  
-  // Display the appointments
-  function displayAppointments() {
-    const appointmentsList = document.getElementById('appointments-list');
-    appointmentsList.innerHTML = '';  // Clear current list
-    appointments.forEach(appointment => {
-      const li = document.createElement('li');
-      li.textContent = `${appointment.date} - ${appointment.description}`;
-      appointmentsList.appendChild(li);
+}
+
+function loadAppointments() {
+    const data = localStorage.getItem('appointments');
+    return data ? JSON.parse(data) : [];
+}
+
+function displayAppointments() {
+    const appointmentList = document.getElementById('appointmentList');
+    appointmentList.innerHTML = '';
+    
+    appointments.forEach((appointment, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${appointment.date}: ${appointment.description}`;
+        
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = () => {
+            deleteAppointment(index);
+        };
+        
+        listItem.appendChild(deleteButton);
+        appointmentList.appendChild(listItem);
     });
-  }
-  
-  // Call this function to display the appointments
-  displayAppointments();
-  
+}
+
+function addAppointment(date, description) {
+    const newAppointment = { date, description };
+    appointments.push(newAppointment);
+    saveAppointments();
+    displayAppointments();
+}
+
+function deleteAppointment(index) {
+    appointments.splice(index, 1);
+    saveAppointments();
+    displayAppointments();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    appointments = loadAppointments();
+    displayAppointments();
+});
+
+document.getElementById('addAppointmentForm').addEventListener('submit', event => {
+    event.preventDefault();
+    
+    const date = document.getElementById('appointmentDate').value;
+    const description = document.getElementById('appointmentDescription').value;
+    
+    addAppointment(date, description);
+    document.getElementById('addAppointmentForm').reset();
+});
