@@ -5,6 +5,14 @@
   "hints": {
     "apple-touch-icons": "off",
     "button-type": "off",
-    "manifest-file-extension": "off"
+    "manifest-file-extension": "off",
+    "compat-api/html": [
+      "default",
+      {
+        "ignore": [
+          "meta[name=theme-color]"
+        ]
+      }
+    ]
   }
 }

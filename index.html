@@ -3,29 +3,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointment Reminders</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-uwp/1.2.31/css/segoe-mdl2-assets.css" integrity="sha512-KZGwB0jIzU32wqO+0LsuEodSmIn+UhPU1ry/5xsL/zFyUVNNoxr9ipxRi8ku5LcORlei3drHlaV8dYgQDYutDA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="manifest" href="manifest.json">
     <style>
-        .ms-Button {
+        .button {
             background-color: yellow;
             border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            margin-top: 20px;
         }
     </style>
 </head>
-<body class="ms-Fabric">
-    <div class="ms-Grid">
-        <div class="ms-Grid-row">
-            <div class="ms-Grid-col ms-sm12 ms-md6 ms-lg4">
-                <h1>Appointment Reminders</h1>
-                <div id="menu">
-                    <button class="ms-Button" onclick="showFrequencies()">View Appointment Frequencies</button>
-                    <button class="ms-Button" onclick="showRecordForm()">Record Last Appointment</button>
-                    <button class="ms-Button" onclick="showReminders()">Show Reminders</button>
-                </div>
-                <div id="content">
-                    <!-- Dynamic content will be injected here -->
-                </div>
-            </div>
+<body>
+    <div class="container">
+        <h1>Appointment Reminders</h1>
+        <div id="menu">
+            <button class="button" onclick="showFrequencies()">View Appointment Frequencies</button>
+            <button class="button" onclick="showRecordForm()">Record Last Appointment</button>
+            <button class="button" onclick="showReminders()">Show Reminders</button>
+        </div>
+        <div id="content" class="content">
+            <!-- Dynamic content will be injected here -->
         </div>
     </div>
     <script src="script.js"></script>

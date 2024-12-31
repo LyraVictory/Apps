@@ -1,5 +1,13 @@
 // filepath: /c:/Users/t.thompson/Repos/Apps/script.js
 
+// Sample APPOINTMENTS data
+const APPOINTMENTS = {
+    "Dentist": 180,
+    "Eye Doctor": 365,
+    "Well Check": 730,
+    "Dermatologist": 365
+};
+
 // Function to display appointment frequencies
 function showFrequencies() {
     const content = document.getElementById("content");
@@ -22,28 +30,22 @@ function showFrequencies() {
 // Function to show the form to record the last appointment
 function showRecordForm() {
     document.getElementById('content').innerHTML = `
-        <form id="recordForm" class="ms-Grid">
-            <div class="ms-Grid-row">
-                <div class="ms-Grid-col ms-sm12">
-                    <label for="appointmentType" class="ms-Label">Appointment Type:</label>
-                    <select id="appointmentType" name="appointmentType" class="ms-Dropdown">
-                        <option value="Dentist">Dentist</option>
-                        <option value="Eye Doctor">Eye Doctor</option>
-                        <option value="Well Check">Well Check</option>
-                        <option value="Dermatologist">Dermatologist</option>
-                    </select>
-                </div>
+        <form id="recordForm">
+            <div>
+                <label for="appointmentType">Appointment Type:</label>
+                <select id="appointmentType" name="appointmentType">
+                    <option value="Dentist">Dentist</option>
+                    <option value="Eye Doctor">Eye Doctor</option>
+                    <option value="Well Check">Well Check</option>
+                    <option value="Dermatologist">Dermatologist</option>
+                </select>
             </div>
-            <div class="ms-Grid-row">
-                <div class="ms-Grid-col ms-sm12">
-                    <label for="appointmentDate" class="ms-Label">Date of Last Appointment:</label>
-                    <input type="date" id="appointmentDate" name="appointmentDate" class="ms-TextField">
-                </div>
+            <div>
+                <label for="appointmentDate">Date of Last Appointment:</label>
+                <input type="date" id="appointmentDate" name="appointmentDate">
             </div>
-            <div class="ms-Grid-row">
-                <div class="ms-Grid-col ms-sm12">
-                    <button type="submit" class="ms-Button">Save</button>
-                </div>
+            <div>
+                <button type="submit">Save</button>
             </div>
         </form>
     `;
@@ -69,3 +71,12 @@ function showReminders() {
     const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
     document.getElementById('content').innerHTML = `<pre>${JSON.stringify(appointments, null, 2)}</pre>`;
 }
+
+// Call the function to display appointment frequencies
+showFrequencies();
+
+// Call the function to show the form to record the last appointment
+showRecordForm();
+
+// Call the function to show reminders
+showReminders();
