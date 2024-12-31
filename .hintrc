@@ -3,6 +3,8 @@
     "development"
   ],
   "hints": {
-    "apple-touch-icons": "off"
+    "apple-touch-icons": "off",
+    "button-type": "off",
+    "manifest-file-extension": "off"
   }
 }

@@ -3,24 +3,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointment Reminders</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/react-uwp/1.2.31/css/segoe-mdl2-assets.css" integrity="sha512-KZGwB0jIzU32wqO+0LsuEodSmIn+UhPU1ry/5xsL/zFyUVNNoxr9ipxRi8ku5LcORlei3drHlaV8dYgQDYutDA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="manifest" href="manifest.json">
+    <style>
+        .ms-Button {
+            background-color: yellow;
+            border: none;
+        }
+    </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Appointment Reminders</h1>
-        <div id="menu">
-            <button onclick="showFrequencies()">View Appointment Frequencies</button>
-            <button onclick="showRecordForm()">Record Last Appointment</button>
-            <button onclick="showReminders()">Show Reminders</button>
-        </div>
-
-        <div id="content">
-            <!-- Dynamic content will be injected here -->
+<body class="ms-Fabric">
+    <div class="ms-Grid">
+        <div class="ms-Grid-row">
+            <div class="ms-Grid-col ms-sm12 ms-md6 ms-lg4">
+                <h1>Appointment Reminders</h1>
+                <div id="menu">
+                    <button class="ms-Button" onclick="showFrequencies()">View Appointment Frequencies</button>
+                    <button class="ms-Button" onclick="showRecordForm()">Record Last Appointment</button>
+                    <button class="ms-Button" onclick="showReminders()">Show Reminders</button>
+                </div>
+                <div id="content">
+                    <!-- Dynamic content will be injected here -->
+                </div>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
-
     <script>
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
