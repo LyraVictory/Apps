@@ -2,42 +2,104 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #7F7A7A;
+    background-color: #a0a0a0;
 }
 
 .container {
     max-width: 600px;
-    margin: 50px auto;
-    background: #A09D9D;
+    margin: 20px auto;
+    background: #dddddd;
     border-radius: 8px;
+    border:#2e2e2e 1px solid;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: #000000;
 }
 
 #menu {
-    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     margin-bottom: 20px;
 }
 
-button {
+.button {
     margin: 10px;
-    padding: 10px 20px;
-    background-color: #FFDE59;
+    padding: 10px;
+    background-color: #eee350;
     color: black;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    white-space: normal; /* Allow text to wrap */
+    flex: 1; /* Allow buttons to grow and shrink */
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+    border: #2e2e2e 1px solid;
 }
 
-button:hover {
-    background-color: #DAB729;
+.button:hover {
+    background-color: #ffd13bde;
 }
 
 #content {
-    margin-top: 20px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+#recordForm {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 10px;
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+    background-color: transparent;
+}
+
+#recordForm label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    width: 100%;
+    text-align: left;
+}
+
+#recordForm select,
+#recordForm input[type="date"] {
+    padding: 5px;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 3px;
+}
+
+#recordForm button {
+    background-color: #eee350;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#recordForm button:hover {
+    background-color: #ffd13bde;
+}
+
+.notification {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }

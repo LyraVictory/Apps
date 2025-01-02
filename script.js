@@ -1,5 +1,3 @@
-// filepath: /c:/Users/t.thompson/Repos/Apps/script.js
-
 // Sample APPOINTMENTS data
 const APPOINTMENTS = {
     "Dentist": 180,
@@ -12,19 +10,12 @@ const APPOINTMENTS = {
 function showFrequencies() {
     const content = document.getElementById("content");
     content.innerHTML = "<h2>Appointment Frequencies</h2>";
+    let html = "<h2>Appointment Frequencies</h2>";
     for (const [name, days] of Object.entries(APPOINTMENTS)) {
-        const months = days / 30;
-        let frequencyText;
-
-        if (months >= 12) {
-            const years = months / 12;
-            frequencyText = years === 1 ? "1 year" : `${years} years`;
-        } else {
-            frequencyText = `${months} months`;
-        }
-
-        content.innerHTML += `<p>${name}: Every ${frequencyText}</p>`;
+        const months = Math.round(days / 30); // Convert days to months and round to the nearest whole number
+        html += `<p>${name}: Every ${months} month${months !== 1 ? 's' : ''}</p>`;
     }
+    content.innerHTML = html;
 }
 
 // Function to show the form to record the last appointment
@@ -69,14 +60,51 @@ function saveAppointment(appointmentType, appointmentDate) {
 // Function to show reminders
 function showReminders() {
     const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
-    document.getElementById('content').innerHTML = `<pre>${JSON.stringify(appointments, null, 2)}</pre>`;
+    let html = "<h2>Appointment Reminders</h2>";
+    if (appointments.length === 0) {
+        html += "<p>No appointments found.</p>";
+    } else {
+        html += `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Appointment Type</th>
+                        <th>Last Appointment Date</th>
+                        <th>Next Appointment Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        appointments.forEach((appointment, index) => {
+            const lastAppointmentDate = new Date(appointment.date);
+            const frequencyDays = APPOINTMENTS[appointment.type];
+            const nextAppointmentDate = new Date(lastAppointmentDate.getTime() + frequencyDays * 24 * 60 * 60 * 1000);
+            const formattedNextAppointmentDate = nextAppointmentDate.toISOString().split('T')[0];
+            html += `
+                <tr>
+                    <td>${appointment.type}</td>
+                    <td>${appointment.date}</td>
+                    <td>${formattedNextAppointmentDate}</td>
+                    <td><button onclick="deleteReminder(${index})">Delete</button></td>
+                </tr>
+            `;
+        });
+        html += `
+                </tbody>
+            </table>
+        `;
+    }
+    document.getElementById('content').innerHTML = html;
 }
 
-// Call the function to display appointment frequencies
-showFrequencies();
+// Function to delete a reminder
+function deleteReminder(index) {
+    let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+    appointments.splice(index, 1); // Remove the appointment at the specified index
+    localStorage.setItem('appointments', JSON.stringify(appointments)); // Save the updated array to local storage
+    showReminders(); // Refresh the reminders list
+}
 
-// Call the function to show the form to record the last appointment
-showRecordForm();
-
-// Call the function to show reminders
-showReminders();
+// Load appointments from local storage once
+let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
