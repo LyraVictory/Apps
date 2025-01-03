@@ -1,151 +1,121 @@
-// Appointment data
+// Sample APPOINTMENTS data
 const APPOINTMENTS = {
-    Dentist: 6 * 30, // 6 months in days
-    "Eye Doctor": 12 * 30, // 1 year in days
-    "Well Check": 12 * 30, // 1 year in days
-    Dermatologist: 24 * 30,
+    "Dentist": 180,
+    "Eye Doctor": 365,
+    "Well Check": 730,
+    "Dermatologist": 365
 };
-
-// Storage for last visits
-let lastVisits = {};
-
-// Utility function to calculate the next appointment date
-function calculateNextDate(lastDate, frequencyDays) {
-    const lastVisit = new Date(lastDate);
-    return new Date(lastVisit.getTime() + frequencyDays * 24 * 60 * 60 * 1000);
-}
 
 // Function to display appointment frequencies
 function showFrequencies() {
     const content = document.getElementById("content");
     content.innerHTML = "<h2>Appointment Frequencies</h2>";
+    let html = "<h2>Appointment Frequencies</h2>";
     for (const [name, days] of Object.entries(APPOINTMENTS)) {
-        const months = days / 30;
-        let frequencyText;
-
-        if (months >= 12) {
-            const years = months / 12;
-            frequencyText = years === 1 ? "1 year" : `${years} years`;
-        } else {
-            frequencyText = `${months} months`;
-        }
-
-        content.innerHTML += `<p>${name}: Every ${frequencyText}</p>`;
+        const months = Math.round(days / 30); // Convert days to months and round to the nearest whole number
+        html += `<p>${name}: Every ${months} month${months !== 1 ? 's' : ''}</p>`;
     }
+    content.innerHTML = html;
 }
 
-
-
-// Function to display the record form
+// Function to show the form to record the last appointment
 function showRecordForm() {
-    const content = document.getElementById("content");
-    content.innerHTML = `
-        <h2>Record Last Appointment</h2>
+    document.getElementById('content').innerHTML = `
         <form id="recordForm">
-            <label for="appointmentType">Appointment Type:</label>
-            <select id="appointmentType">
-                ${Object.keys(APPOINTMENTS)
-                    .map((type) => `<option value="${type}">${type}</option>`)
-                    .join("")}
-            </select><br><br>
-            <label for="lastDate">Last Visit Date:</label>
-            <input type="date" id="lastDate"><br><br>
-            <button type="button" onclick="recordAppointment()">Submit</button>
+            <div>
+                <label for="appointmentType">Appointment Type:</label>
+                <select id="appointmentType" name="appointmentType">
+                    <option value="Dentist">Dentist</option>
+                    <option value="Eye Doctor">Eye Doctor</option>
+                    <option value="Well Check">Well Check</option>
+                    <option value="Dermatologist">Dermatologist</option>
+                </select>
+            </div>
+            <div>
+                <label for="appointmentDate">Date of Last Appointment:</label>
+                <input type="date" id="appointmentDate" name="appointmentDate">
+            </div>
+            <div>
+                <button type="submit">Save</button>
+            </div>
         </form>
     `;
-}
 
-// Function to record the last appointment
-function recordAppointment() {
-    const type = document.getElementById("appointmentType").value;
-    const lastDate = document.getElementById("lastDate").value;
-    if (!lastDate) {
-        alert("Please select a date!");
-        return;
-    }
-    lastVisits[type] = lastDate;
-    alert(`${type} appointment recorded successfully!`);
-    showRecordForm();
-}
-
-// Function to display reminders
-function showReminders() {
-    const content = document.getElementById("content");
-    content.innerHTML = "<h2>Upcoming Appointment Reminders</h2>";
-    const today = new Date();
-
-    if (Object.keys(lastVisits).length === 0) {
-        content.innerHTML += "<p>No appointments recorded yet!</p>";
-        return;
-    }
-
-    for (const [type, lastDate] of Object.entries(lastVisits)) {
-        const frequencyDays = APPOINTMENTS[type];
-        const nextDate = calculateNextDate(lastDate, frequencyDays);
-        const daysUntil = Math.ceil((nextDate - today) / (1000 * 60 * 60 * 24)); // Days difference
-
-        if (daysUntil >= 0) {
-            content.innerHTML += `<p>${type}: Next appointment is on ${nextDate.toDateString()} (${daysUntil} days left).</p>`;
-        } else {
-            content.innerHTML += `<p>${type}: Overdue since ${nextDate.toDateString()}!</p>`;
-        }
-    }
-}
-
-let appointments = [];
-
-function saveAppointments() {
-    localStorage.setItem('appointments', JSON.stringify(appointments));
-}
-
-function loadAppointments() {
-    const data = localStorage.getItem('appointments');
-    return data ? JSON.parse(data) : [];
-}
-
-function displayAppointments() {
-    const appointmentList = document.getElementById('appointmentList');
-    appointmentList.innerHTML = '';
-    
-    appointments.forEach((appointment, index) => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `${appointment.date}: ${appointment.description}`;
-        
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.onclick = () => {
-            deleteAppointment(index);
-        };
-        
-        listItem.appendChild(deleteButton);
-        appointmentList.appendChild(listItem);
+    document.getElementById('recordForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const appointmentType = document.getElementById('appointmentType').value;
+        const appointmentDate = document.getElementById('appointmentDate').value;
+        saveAppointment(appointmentType, appointmentDate);
     });
 }
 
-function addAppointment(date, description) {
-    const newAppointment = { date, description };
-    appointments.push(newAppointment);
-    saveAppointments();
-    displayAppointments();
+// Function to save the appointment to local storage
+function saveAppointment(appointmentType, appointmentDate) {
+    let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+    appointments.push({ type: appointmentType, date: appointmentDate });
+    localStorage.setItem('appointments', JSON.stringify(appointments));
+    alert('Appointment saved!');
 }
 
-function deleteAppointment(index) {
-    appointments.splice(index, 1);
-    saveAppointments();
-    displayAppointments();
+// Function to show reminders
+function showReminders() {
+    const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+    let html = "<h2>Appointment Reminders</h2>";
+    if (appointments.length === 0) {
+        html += "<p>No appointments found.</p>";
+    } else {
+        html += `
+            <table>
+                <thead></thead>
+                    <tr>
+                        <th>Appointment Type</th>
+                        <th>Last Appointment </th>
+                        <th>Next Appointment </th>
+                        <th></th>
+                    </tr>
+                <tbody>
+        `;
+        appointments.forEach((appointment, index) => {
+            const lastAppointmentDate = new Date(appointment.date);
+            if (isNaN(lastAppointmentDate.getTime())) {
+                console.error(`Invalid date value: ${appointment.date}`);
+                html += `
+                    <tr>
+                        <td>${appointment.type}</td>
+                        <td>Invalid date</td>
+                        <td>Invalid date</td>
+                        <td><button onclick="deleteReminder(${index})">Delete</button></td>
+                    </tr>
+                `;
+            } else {
+                const frequencyDays = APPOINTMENTS[appointment.type];
+                const nextAppointmentDate = new Date(lastAppointmentDate.getTime() + frequencyDays * 24 * 60 * 60 * 1000);
+                const formattedNextAppointmentDate = nextAppointmentDate.toISOString().split('T')[0];
+                html += `
+                    <tr>
+                        <td>${appointment.type}</td>
+                        <td>${appointment.date}</td>
+                        <td>${formattedNextAppointmentDate}</td>
+                        <td><button onclick="deleteReminder(${index})">Delete</button></td>
+                    </tr>
+                `;
+            }
+        });
+        html += `
+                </tbody>
+            </table>
+        `;
+    }
+    document.getElementById('content').innerHTML = html;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    appointments = loadAppointments();
-    displayAppointments();
-});
+// Function to delete a reminder
+function deleteReminder(index) {
+    let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+    appointments.splice(index, 1); // Remove the appointment at the specified index
+    localStorage.setItem('appointments', JSON.stringify(appointments)); // Save the updated array to local storage
+    showReminders(); // Refresh the reminders list
+}
 
-document.getElementById('addAppointmentForm').addEventListener('submit', event => {
-    event.preventDefault();
-    
-    const date = document.getElementById('appointmentDate').value;
-    const description = document.getElementById('appointmentDescription').value;
-    
-    addAppointment(date, description);
-    document.getElementById('addAppointmentForm').reset();
-});
+// Load appointments from local storage once
+let appointments = JSON.parse(localStorage.getItem('appointments')) || [];

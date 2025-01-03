@@ -4,24 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointment Reminders</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
-
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="MyWebSite" />
+    <meta name="application-name" content="Appointment Reminders" />
+    <link rel="stylesheet" href="style.css"> <!-- Link to the stylesheet -->
 </head>
 <body>
     <div class="container">
         <h1>Appointment Reminders</h1>
         <div id="menu">
-            <button onclick="showFrequencies()">View Appointment Frequencies</button>
-            <button onclick="showRecordForm()">Record Last Appointment</button>
-            <button onclick="showReminders()">Show Reminders</button>
+            <button class="button" onclick="showFrequencies()">View Appointment Frequencies</button>
+            <button class="button" onclick="showRecordForm()">Record Last Appointment</button>
+            <button class="button" onclick="showReminders()">Show Appointment Reminders</button>
         </div>
-
-        <div id="content">
+        <div id="content" class="content">
             <!-- Dynamic content will be injected here -->
         </div>
     </div>
-    <script src="script.js"></script>
 
     <script>
         if ('serviceWorker' in navigator) {
@@ -35,7 +39,8 @@
               });
           });
         }
-      </script>
-      
+    </script>
+    
+    <script src="script.js"></script>
 </body>
 </html>

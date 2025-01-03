@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "development"
+  ],
+  "hints": {
+    "manifest-file-extension": "off",
+    "button-type": "off"
+  }
+}
