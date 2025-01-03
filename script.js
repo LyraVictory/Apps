@@ -66,29 +66,40 @@ function showReminders() {
     } else {
         html += `
             <table>
-                <thead>
+                <thead></thead>
                     <tr>
                         <th>Appointment Type</th>
-                        <th>Last Appointment Date</th>
-                        <th>Next Appointment Date</th>
-                        <th>Action</th>
+                        <th>Last Appointment </th>
+                        <th>Next Appointment </th>
+                        <th></th>
                     </tr>
-                </thead>
                 <tbody>
         `;
         appointments.forEach((appointment, index) => {
             const lastAppointmentDate = new Date(appointment.date);
-            const frequencyDays = APPOINTMENTS[appointment.type];
-            const nextAppointmentDate = new Date(lastAppointmentDate.getTime() + frequencyDays * 24 * 60 * 60 * 1000);
-            const formattedNextAppointmentDate = nextAppointmentDate.toISOString().split('T')[0];
-            html += `
-                <tr>
-                    <td>${appointment.type}</td>
-                    <td>${appointment.date}</td>
-                    <td>${formattedNextAppointmentDate}</td>
-                    <td><button onclick="deleteReminder(${index})">Delete</button></td>
-                </tr>
-            `;
+            if (isNaN(lastAppointmentDate.getTime())) {
+                console.error(`Invalid date value: ${appointment.date}`);
+                html += `
+                    <tr>
+                        <td>${appointment.type}</td>
+                        <td>Invalid date</td>
+                        <td>Invalid date</td>
+                        <td><button onclick="deleteReminder(${index})">Delete</button></td>
+                    </tr>
+                `;
+            } else {
+                const frequencyDays = APPOINTMENTS[appointment.type];
+                const nextAppointmentDate = new Date(lastAppointmentDate.getTime() + frequencyDays * 24 * 60 * 60 * 1000);
+                const formattedNextAppointmentDate = nextAppointmentDate.toISOString().split('T')[0];
+                html += `
+                    <tr>
+                        <td>${appointment.type}</td>
+                        <td>${appointment.date}</td>
+                        <td>${formattedNextAppointmentDate}</td>
+                        <td><button onclick="deleteReminder(${index})">Delete</button></td>
+                    </tr>
+                `;
+            }
         });
         html += `
                 </tbody>
